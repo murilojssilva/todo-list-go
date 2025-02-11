@@ -7,10 +7,10 @@ import (
 
 func PostAsyncTasks(taskChannel <-chan models.Task, done chan<- bool) {
 	for task := range taskChannel {
-		fmt.Printf("[%s] Tarefa %s | Concluído %s\n", 
+		fmt.Printf("[%s] Tarefa %s | Status: %s\n", 
 			task.Created_at.Format("02/Jan/2006 15:04:05"), 
 			task.Title, 
-			map[bool]string{true: "Sim", false: "Não"}[task.Completed],
+			map[bool]string{true: "Concluído"}[task.Completed],
 		)
 	}
 	done <- true
