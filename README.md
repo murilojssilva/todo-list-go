@@ -23,14 +23,14 @@ Criar uma API REST utilizando Go que gerencie um sistema simples de tarefas (To-
 
 - [ ] **Concorrência**
   - [ ] Implementar um sistema de processamento de tarefas em segundo plano utilizando goroutines e channels.
-  - [ ] Criar uma rota `POST /tasks/{id}/process` que inicia o processamento da tarefa em uma goroutine, simulando um trabalho assíncrono (exemplo: um `time.Sleep(3 * time.Second)` antes de marcar a tarefa como concluída).
+  - [x] Criar uma rota `POST /tasks/{id}/process` que inicia o processamento da tarefa em uma goroutine, simulando um trabalho assíncrono (exemplo: um `time.Sleep(3 * time.Second)` antes de marcar a tarefa como concluída).
 
 ## Requisitos Técnicos
 
 - [x] Utilizar `net/http` ou `gin-gonic/gin` para criar a API.
 - [ ] Utilizar `sync.Mutex` ou outro mecanismo de concorrência para evitar condições de corrida ao acessar as tarefas.
 - [ ] Armazenar as tarefas em uma estrutura de dados em memória (mapa ou slice com mutex).
-- [ ] Implementar logs para acompanhar o processamento das tarefas.
+- [x] Implementar logs para acompanhar o processamento das tarefas.
 
 ## Diferenciais (Não obrigatórios, mas valorizados)
 

@@ -7,6 +7,7 @@ import (
 	"todo-list/internal/data"
 	"todo-list/internal/models"
 	"todo-list/internal/service"
+	"todo-list/processor"
 
 	"github.com/gin-gonic/gin"
 )
@@ -83,4 +84,41 @@ func DeleteTaskById(c *gin.Context){
 		}
 	}
 	c.JSON(http.StatusNotFound, gin.H{"message": "task not found"})	
+}
+
+func ProcessTask(c *gin.Context) {
+	idParam := c.Param("id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID inválido"})
+		return
+	}
+
+	var task *models.Task
+	for i := range data.Tasks {
+		if data.Tasks[i].ID == id {
+			task = &data.Tasks[i]
+			break
+		}
+	}
+
+	if task == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Tarefa não encontrada"})
+		return
+	}
+
+	taskChannel := make(chan models.Task, 1)
+	done := make(chan bool)
+
+	go func() {
+		time.Sleep(3 * time.Second)
+		task.Completed = true
+		taskChannel <- *task
+		close(taskChannel)
+		<-done
+	}()
+
+	go processor.PostAsyncTasks(taskChannel, done)
+
+	c.JSON(http.StatusAccepted, gin.H{"message": "Processamento iniciado"})
 }
